@@ -14,7 +14,9 @@ const LoginPage = () => {
     try {
       const response = await api.post('/user/login', { email, password });
       if (response.data.token) {
+        localStorage.setItem('userName', response.data.user.name);
         localStorage.setItem('token', response.data.token);
+        api.defaults.headers['authorization'] = 'Bearer ' + response.data.token;
         alert('로그인 성공!');
         navigate('/');
       }

@@ -7,6 +7,15 @@ import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom';
 
 const TodoPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userName = localStorage.getItem('userName');
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState('');
 
@@ -65,9 +74,18 @@ const TodoPage = () => {
 
   return (
     <Container className="mt-[20vh]">
-      <Link to="/login" className="font-bold text-xl underline text-blue-300 ">
-        로그인은 하셨나요
-      </Link>
+      {!isLoggedIn ? (
+        <Link
+          to="/login"
+          className="font-bold text-xl underline text-blue-300 "
+        >
+          로그인은 하셨나요
+        </Link>
+      ) : (
+        <div className="font-bold text-xl underline text-blue-300">
+          {userName}님 반가워용
+        </div>
+      )}
       <div className="text-center text-4xl font-bold text-slate-300">
         [ AWS 포기한사람 🤣]
       </div>
@@ -91,11 +109,17 @@ const TodoPage = () => {
         </Col>
       </Row>
 
-      <TodoBoard
-        todoList={todoList}
-        deleteItem={deleteItem}
-        toggleComplete={toggleComplete}
-      />
+      {isLoggedIn ? (
+        <TodoBoard
+          todoList={todoList}
+          deleteItem={deleteItem}
+          toggleComplete={toggleComplete}
+        />
+      ) : (
+        <div className="text-center text-4xl font-bold text-slate-300">
+          <Link to={'/login'}>로그인해주세용</Link>
+        </div>
+      )}
     </Container>
   );
 };
