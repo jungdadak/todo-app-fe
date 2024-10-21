@@ -4,14 +4,15 @@ import api from '../utils/api';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 const TodoPage = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState(
     localStorage.getItem('userName') || ''
   );
+
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -19,8 +20,10 @@ const TodoPage = () => {
       setIsLoggedIn(true);
     }
   }, []);
+
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState('');
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
@@ -32,9 +35,14 @@ const TodoPage = () => {
 
     navigate('/login');
   };
+
   const getTasks = async () => {
-    const response = await api.get('/tasks');
-    setTodoList(response.data.data);
+    try {
+      const response = await api.get('/tasks');
+      setTodoList(response.data.data);
+    } catch (error) {
+      console.error('할 일 목록을 가져오는 데 실패했습니다:', error);
+    }
   };
 
   useEffect(() => {
@@ -44,7 +52,7 @@ const TodoPage = () => {
   const addTodo = async () => {
     try {
       const response = await api.post('/tasks', {
-        task: todoValue,
+        task: `${todoValue} - ${userName}`, // 여기서 userName을 추가
         isComplete: false,
       });
       if (response.status === 200) {
@@ -88,7 +96,6 @@ const TodoPage = () => {
   return (
     <Container className="mt-[20vh]">
       <div className="flex justify-between">
-        {' '}
         {!isLoggedIn ? (
           <Link
             to="/login"
@@ -108,27 +115,35 @@ const TodoPage = () => {
         )}
       </div>
       <div className="text-center text-4xl font-bold text-slate-300">
-        [ AWS 포기한사람 🤣]
+        {isLoggedIn ? '[ 사생활침해 할일앱 ]' : '[ AWS 포기한사람 🤣 ]'}
       </div>
-      <Row className="tracking-widest mt-5 bg-slate-300 flex text-center items-center rounded-md">
-        <Col xs={12} sm={10}>
-          <input
-            type="text"
-            placeholder="할일 없으면 취직 못함"
-            className="w-full p-2 rounded-md text-center placeholder-slate-500 font-bold text-2xl line-through"
-            value={todoValue}
-            onChange={(event) => setTodoValue(event.target.value)}
-          />
-        </Col>
-        <Col xs={12} sm={2}>
-          <button
-            className="h-12 w-full rounded-lg bg-opacity-50 bg-green-300 text-white font-bold text-2xl p-2 hover:bg-green-500"
-            onClick={addTodo}
-          >
-            추가
-          </button>
-        </Col>
-      </Row>
+
+      {/* 입력 폼을 로그인 상태에 따라 조건부 렌더링 */}
+      {isLoggedIn ? (
+        <Row className="tracking-widest mt-5 bg-slate-300 flex text-center items-center rounded-md">
+          <Col xs={12} sm={10}>
+            <input
+              type="text"
+              placeholder="할일 없으면 취직 못함"
+              className="w-full p-2 rounded-md text-center placeholder-slate-500 font-bold text-2xl line-through"
+              value={todoValue}
+              onChange={(event) => setTodoValue(event.target.value)}
+            />
+          </Col>
+          <Col xs={12} sm={2}>
+            <button
+              className="h-12 w-full rounded-lg bg-opacity-50 bg-green-300 text-white font-bold text-2xl p-2 hover:bg-green-500"
+              onClick={addTodo}
+            >
+              추가
+            </button>
+          </Col>
+        </Row>
+      ) : (
+        <div className="text-center text-2xl font-bold text-slate-500 mt-5">
+          로그인 해줘
+        </div>
+      )}
 
       {isLoggedIn ? (
         <TodoBoard
