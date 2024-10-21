@@ -87,17 +87,17 @@ const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <Link to="/">뒤로가기</Link>
       <Form
         className="login-box w-full max-w-md p-8 bg-white rounded shadow-md"
         onSubmit={handleSubmit}
       >
+        {' '}
+        <Link to="/">홈으로</Link>
         <div className="flex justify-center mb-6">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 bg-clip-text text-transparent inline-block">
             어서오세요
           </h1>
         </div>
-
         <Form.Group className="mb-3" controlId="formName">
           <Form.Label htmlFor="nameInput">Name</Form.Label>
           <Form.Control
@@ -117,7 +117,6 @@ const RegisterPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label htmlFor="emailInput">Email address</Form.Label>
           <Form.Control
@@ -152,7 +151,6 @@ const RegisterPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label htmlFor="passwordInput">Password</Form.Label>
           <Form.Control
@@ -171,7 +169,6 @@ const RegisterPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
           <div className="flex items-center gap-4 mb-2">
             <Form.Label htmlFor="checkpwInput">Re-enter Password</Form.Label>
@@ -199,7 +196,6 @@ const RegisterPage = () => {
             aria-label="Re-enter Password"
           />
         </Form.Group>
-
         {isFormValid() && (
           <Button
             className="button-primary w-full mt-4 animate-moveLeftRight"

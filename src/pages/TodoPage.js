@@ -64,8 +64,11 @@ const TodoPage = () => {
   };
 
   return (
-    <Container>
-      <div className="text-center text-4xl font-bold text-slate-300 mt-[20vh]">
+    <Container className="mt-[20vh]">
+      <Link to="/login" className="font-bold text-xl underline text-blue-300 ">
+        로그인은 하셨나요
+      </Link>
+      <div className="text-center text-4xl font-bold text-slate-300">
         [ AWS 포기한사람 🤣]
       </div>
       <Row className="tracking-widest mt-5 bg-slate-300 flex text-center items-center rounded-md">
@@ -93,9 +96,6 @@ const TodoPage = () => {
         deleteItem={deleteItem}
         toggleComplete={toggleComplete}
       />
-      <Link to="/login" className="font-bold text-xl underline text-blue-300">
-        로그인은 하셨나요
-      </Link>
     </Container>
   );
 };
