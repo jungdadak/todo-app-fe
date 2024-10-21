@@ -115,7 +115,7 @@ const TodoPage = () => {
         )}
       </div>
       <div className="text-center text-4xl font-bold text-slate-300">
-        {isLoggedIn ? '[ 사생활침해 할일앱 ]' : '[ AWS 포기한사람 🤣 ]'}
+        {isLoggedIn ? '[ 비밀없는 할일앱 ]' : '[ AWS 포기한사람 🤣 ]'}
       </div>
 
       {/* 입력 폼을 로그인 상태에 따라 조건부 렌더링 */}
