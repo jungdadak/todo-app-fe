@@ -20,7 +20,7 @@ const RegisterPage = () => {
     if (!isFormValid()) return;
 
     try {
-      await api.post('/api/user', { name, email, password });
+      await api.post('/user', { name, email, password });
       alert('회원가입 완료!');
       navigate('/login'); // 회원가입 후 로그인 페이지로 이동
     } catch (error) {
@@ -44,7 +44,7 @@ const RegisterPage = () => {
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailRegex.test(email) && email.length <= 100; // 길이 제한 (최대 100자)
+    const isValid = emailRegex.test(email) && email.length <= 30;
     setEmailValid(isValid);
   };
 
@@ -111,8 +111,8 @@ const RegisterPage = () => {
             className="transition duration-300 ease-in-out"
             aria-label="Name"
           />
-          {name.length === 15 && (
-            <Form.Text className="text-gray-500">
+          {name.length >= 15 && (
+            <Form.Text className="text-gray-500 text-red-300">
               김수한무거북이와두루미
             </Form.Text>
           )}
@@ -159,13 +159,13 @@ const RegisterPage = () => {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
-            maxLength={10}
+            maxLength={20}
             className="transition duration-300 ease-in-out"
             aria-label="Password"
           />
-          {password.length === 10 && (
+          {password.length > 20 && (
             <Form.Text className="text-gray-500">
-              10글자까지 가능합니다
+              20글자까지 가능합니다
             </Form.Text>
           )}
         </Form.Group>
