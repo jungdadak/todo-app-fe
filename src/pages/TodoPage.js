@@ -5,10 +5,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 const TodoPage = () => {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userName = localStorage.getItem('userName');
+  const [userName, setUserName] = useState(
+    localStorage.getItem('userName') || ''
+  );
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -18,7 +21,17 @@ const TodoPage = () => {
   }, []);
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState('');
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
 
+    delete api.defaults.headers['authorization'];
+
+    setIsLoggedIn(false);
+    setUserName('');
+
+    navigate('/login');
+  };
   const getTasks = async () => {
     const response = await api.get('/tasks');
     setTodoList(response.data.data);
@@ -74,18 +87,26 @@ const TodoPage = () => {
 
   return (
     <Container className="mt-[20vh]">
-      {!isLoggedIn ? (
-        <Link
-          to="/login"
-          className="font-bold text-xl underline text-blue-300 "
-        >
-          로그인은 하셨나요
-        </Link>
-      ) : (
-        <div className="font-bold text-xl underline text-blue-300">
-          {userName}님 반가워용
-        </div>
-      )}
+      <div className="flex justify-between">
+        {' '}
+        {!isLoggedIn ? (
+          <Link
+            to="/login"
+            className="font-bold text-xl underline text-blue-300 "
+          >
+            로그인은 하셨나요
+          </Link>
+        ) : (
+          <div className="font-bold text-xl underline text-blue-300">
+            {userName}님 반가워용
+          </div>
+        )}
+        {isLoggedIn && (
+          <div className="cursor-pointer text-red-500" onClick={handleLogout}>
+            로그아웃 ;o;
+          </div>
+        )}
+      </div>
       <div className="text-center text-4xl font-bold text-slate-300">
         [ AWS 포기한사람 🤣]
       </div>
@@ -116,7 +137,7 @@ const TodoPage = () => {
           toggleComplete={toggleComplete}
         />
       ) : (
-        <div className="text-center text-4xl font-bold text-slate-300">
+        <div className="text-center text-4xl font-bold text-slate-300 mt-5">
           <Link to={'/login'}>로그인해주세용</Link>
         </div>
       )}
