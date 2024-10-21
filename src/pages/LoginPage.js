@@ -12,7 +12,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/api/user/login', { email, password });
+      const response = await api.post('/user/login', { email, password });
       if (response.data.token) {
         // 로그인 성공 시 토큰 저장 (예: 로컬스토리지에 저장)
         localStorage.setItem('token', response.data.token);
