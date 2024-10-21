@@ -14,10 +14,9 @@ const LoginPage = () => {
     try {
       const response = await api.post('/user/login', { email, password });
       if (response.data.token) {
-        // 로그인 성공 시 토큰 저장 (예: 로컬스토리지에 저장)
         localStorage.setItem('token', response.data.token);
         alert('로그인 성공!');
-        navigate('/'); // 로그인 후 메인 페이지로 이동
+        navigate('/');
       }
     } catch (error) {
       alert('로그인 실패: 이메일 또는 비밀번호를 확인해주세요.');
