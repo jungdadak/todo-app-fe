@@ -24,6 +24,7 @@ const RegisterPage = () => {
       alert('회원가입 완료!');
       navigate('/login'); // 회원가입 후 로그인 페이지로 이동
     } catch (error) {
+      console.error('회원가입 에러:', error.response || error);
       alert('회원가입 실패: 다시 시도해주세요.');
     }
   };
