@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import api from '../utils/api';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -9,14 +12,25 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [checkpw, setCheckpw] = useState('');
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(null);
-
-  // Ref for the name input to apply animation
+  const navigate = useNavigate();
   const nameRef = useRef(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isFormValid()) return;
+
+    try {
+      await api.post('/api/user', { name, email, password });
+      alert('회원가입 완료!');
+      navigate('/login'); // 회원가입 후 로그인 페이지로 이동
+    } catch (error) {
+      alert('회원가입 실패: 다시 시도해주세요.');
+    }
+  };
 
   const handleNameChange = (e) => {
     const newName = e.target.value;
     if (newName.length <= 50) {
-      // 이름 길이 제한 (최대 50자)
       setName(newName);
       triggerFranticFlash();
     }
@@ -29,7 +43,6 @@ const RegisterPage = () => {
   };
 
   const validateEmail = (email) => {
-    // 이메일 유효성 검사 (간단한 정규식 사용)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailRegex.test(email) && email.length <= 100; // 길이 제한 (최대 100자)
     setEmailValid(isValid);
@@ -38,9 +51,7 @@ const RegisterPage = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     if (newPassword.length <= 30) {
-      // 비밀번호 길이 제한 (최대 30자)
       setPassword(newPassword);
-      // 비밀번호가 변경되면 비밀번호 확인 상태를 초기화
       setDoPasswordsMatch(null);
     }
   };
@@ -48,9 +59,7 @@ const RegisterPage = () => {
   const handleCheckpwChange = (e) => {
     const newCheckpw = e.target.value;
     if (newCheckpw.length <= 30) {
-      // 비밀번호 확인 길이 제한 (최대 30자)
       setCheckpw(newCheckpw);
-      // 비밀번호 확인 입력 시 상태 업데이트
       if (newCheckpw.length === 0) {
         setDoPasswordsMatch(null);
       } else {
@@ -59,24 +68,14 @@ const RegisterPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // 현재는 로직 없이 스타일만 적용
-    alert('회원가입 완료!');
-  };
-
   const triggerFranticFlash = () => {
     if (nameRef.current) {
-      // 애니메이션 클래스를 제거
       nameRef.current.classList.remove('animate-franticFlash');
-      // Reflow를 강제로 발생시켜 애니메이션을 재실행
       void nameRef.current.offsetWidth;
-      // 애니메이션 클래스 재추가
       nameRef.current.classList.add('animate-franticFlash');
     }
   };
 
-  // 모든 필드가 유효한지 확인
   const isFormValid = () => {
     return (
       name.trim() !== '' &&
@@ -88,6 +87,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Link to="/">뒤로가기</Link>
       <Form
         className="login-box w-full max-w-md p-8 bg-white rounded shadow-md"
         onSubmit={handleSubmit}
@@ -98,7 +98,6 @@ const RegisterPage = () => {
           </h1>
         </div>
 
-        {/* Name Field */}
         <Form.Group className="mb-3" controlId="formName">
           <Form.Label htmlFor="nameInput">Name</Form.Label>
           <Form.Control
@@ -108,7 +107,7 @@ const RegisterPage = () => {
             placeholder="Name"
             value={name}
             onChange={handleNameChange}
-            maxLength={15} // 최대 50자
+            maxLength={15}
             className="transition duration-300 ease-in-out"
             aria-label="Name"
           />
@@ -119,7 +118,6 @@ const RegisterPage = () => {
           )}
         </Form.Group>
 
-        {/* Email Field */}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label htmlFor="emailInput">Email address</Form.Label>
           <Form.Control
@@ -155,7 +153,6 @@ const RegisterPage = () => {
           )}
         </Form.Group>
 
-        {/* Password Field */}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label htmlFor="passwordInput">Password</Form.Label>
           <Form.Control
@@ -164,7 +161,7 @@ const RegisterPage = () => {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
-            maxLength={10} // 최대 30자
+            maxLength={10}
             className="transition duration-300 ease-in-out"
             aria-label="Password"
           />
@@ -175,7 +172,6 @@ const RegisterPage = () => {
           )}
         </Form.Group>
 
-        {/* Password Confirmation Field */}
         <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
           <div className="flex items-center gap-4 mb-2">
             <Form.Label htmlFor="checkpwInput">Re-enter Password</Form.Label>
@@ -204,7 +200,6 @@ const RegisterPage = () => {
           />
         </Form.Group>
 
-        {/* Submit Button */}
         {isFormValid() && (
           <Button
             className="button-primary w-full mt-4 animate-moveLeftRight"

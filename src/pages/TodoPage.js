@@ -4,6 +4,7 @@ import api from '../utils/api';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import { Link } from 'react-router-dom';
 
 const TodoPage = () => {
   const [todoList, setTodoList] = useState([]);
@@ -13,9 +14,11 @@ const TodoPage = () => {
     const response = await api.get('/tasks');
     setTodoList(response.data.data);
   };
+
   useEffect(() => {
     getTasks();
   }, []);
+
   const addTodo = async () => {
     try {
       const response = await api.post('/tasks', {
@@ -23,9 +26,12 @@ const TodoPage = () => {
         isComplete: false,
       });
       if (response.status === 200) {
+        console.log('success');
+        setTodoValue('');
         getTasks();
+      } else {
+        throw new Error('fail');
       }
-      setTodoValue('');
     } catch (error) {
       console.log('error:', error);
     }
@@ -56,20 +62,27 @@ const TodoPage = () => {
       console.log('error', error);
     }
   };
+
   return (
     <Container>
-      <Row className="add-item-row">
+      <div className="text-center text-4xl font-bold text-slate-300 mt-[20vh]">
+        [ AWS 포기한사람 🤣]
+      </div>
+      <Row className="tracking-widest mt-5 bg-slate-300 flex text-center items-center rounded-md">
         <Col xs={12} sm={10}>
           <input
             type="text"
-            placeholder="할일을 입력하세요"
-            onChange={(event) => setTodoValue(event.target.value)}
-            className="input-box"
+            placeholder="할일 없으면 취직 못함"
+            className="w-full p-2 rounded-md text-center placeholder-slate-500 font-bold text-2xl line-through"
             value={todoValue}
+            onChange={(event) => setTodoValue(event.target.value)}
           />
         </Col>
         <Col xs={12} sm={2}>
-          <button onClick={addTodo} className="button-add">
+          <button
+            className="h-12 w-full rounded-lg bg-opacity-50 bg-green-300 text-white font-bold text-2xl p-2 hover:bg-green-500"
+            onClick={addTodo}
+          >
             추가
           </button>
         </Col>
@@ -80,6 +93,9 @@ const TodoPage = () => {
         deleteItem={deleteItem}
         toggleComplete={toggleComplete}
       />
+      <Link to="/login" className="font-bold text-xl underline text-blue-300">
+        로그인은 하셨나요
+      </Link>
     </Container>
   );
 };
