@@ -15,7 +15,7 @@ function App() {
 			const storedToken = localStorage.getItem("token");
 			if (storedToken) {
 				const response = await api.get("/user/me");
-				console.log("res", response);
+				setUser(response.data);
 			}
 		} catch (error) {}
 	};
@@ -30,13 +30,12 @@ function App() {
 				path="/"
 				element={
 					<PrivateRoute user={user}>
-						<Route path="/" element={<TodoPage />} />
+						<TodoPage />
 					</PrivateRoute>
 				}
-			></Route>
-
+			/>
 			<Route path="/register" element={<RegisterPage />} />
-			<Route path="/login" element={<LoginPage />} />
+			<Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
 		</Routes>
 	);
 }
