@@ -7,7 +7,8 @@ const TodoItem = ({ item, deleteItem, toggleComplete }) => {
 			<Col xs={12}>
 				<div className={`todo-item ${item.isComplete ? "item-complete" : ""}`}>
 					<div className="todo-content">{item.task}</div>
-					<div>by {item.author.name}</div>
+					<div>by {item.author?.name || "알 수 없는 사용자"}</div>
+
 					<div>
 						<button
 							className="button-delete p-2"

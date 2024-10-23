@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const TodoPage = ({ user, setUser }) => {
 	const navigate = useNavigate();
-	const userName = user ? user.name : "";
+	const userName = localStorage.getItem("userName");
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -90,7 +90,7 @@ const TodoPage = ({ user, setUser }) => {
 						로그인은 하셨나요
 					</Link>
 				) : (
-					<div className="font-bold text-xl underline text-blue-300">
+					<div className="font-bold p-3 text-xl underline text-blue-300">
 						{userName}님 반가워용
 					</div>
 				)}
