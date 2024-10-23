@@ -34,9 +34,10 @@ const LoginPage = ({ user, setUser }) => {
 		<div className="display-center w-[50vw] mx-auto mt-[20vh] border-white border-2 p-3 rounded-lg text-yellow-300">
 			<Form className="login-box" onSubmit={handleLogin}>
 				<h1 className="text-white">로그인</h1>
-				<Form.Group className="mb-3" controlId="formBasicEmail">
-					<Form.Label>Email address</Form.Label>
+				<Form.Group className="mb-3">
+					<Form.Label htmlFor="formBasicEmail">Email address</Form.Label>
 					<Form.Control
+						id="formBasicEmail"
 						type="email"
 						placeholder="Enter email"
 						value={email}
@@ -44,9 +45,10 @@ const LoginPage = ({ user, setUser }) => {
 					/>
 				</Form.Group>
 
-				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Password</Form.Label>
+				<Form.Group className="mb-3">
+					<Form.Label htmlFor="formBasicPassword">Password</Form.Label>
 					<Form.Control
+						id="formBasicPassword"
 						type="password"
 						placeholder="Password"
 						value={password}

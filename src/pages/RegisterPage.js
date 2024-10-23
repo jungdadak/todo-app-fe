@@ -91,14 +91,15 @@ const RegisterPage = () => {
 				className="login-box w-full max-w-md p-8 bg-white rounded shadow-md"
 				onSubmit={handleSubmit}
 			>
-				{" "}
 				<Link to="/">홈으로</Link>
 				<div className="flex justify-center mb-6">
 					<h1 className="text-4xl font-bold bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 bg-clip-text text-transparent inline-block">
 						어서오세요
 					</h1>
 				</div>
-				<Form.Group className="mb-3" controlId="formName">
+
+				{/* Name Field */}
+				<Form.Group className="mb-3">
 					<Form.Label htmlFor="nameInput">Name</Form.Label>
 					<Form.Control
 						ref={nameRef}
@@ -117,7 +118,9 @@ const RegisterPage = () => {
 						</Form.Text>
 					)}
 				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicEmail">
+
+				{/* Email Field */}
+				<Form.Group className="mb-3">
 					<Form.Label htmlFor="emailInput">Email address</Form.Label>
 					<Form.Control
 						id="emailInput"
@@ -149,7 +152,9 @@ const RegisterPage = () => {
 						<Form.Text className="text-red-500">그런 이메일이 어디있냐</Form.Text>
 					)}
 				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPassword">
+
+				{/* Password Field */}
+				<Form.Group className="mb-3">
 					<Form.Label htmlFor="passwordInput">Password</Form.Label>
 					<Form.Control
 						id="passwordInput"
@@ -165,7 +170,9 @@ const RegisterPage = () => {
 						<Form.Text className="text-gray-500">20글자까지 가능합니다</Form.Text>
 					)}
 				</Form.Group>
-				<Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
+
+				{/* Password Confirm Field */}
+				<Form.Group className="mb-3">
 					<div className="flex items-center gap-4 mb-2">
 						<Form.Label htmlFor="checkpwInput">Re-enter Password</Form.Label>
 						{doPasswordsMatch === true && (
@@ -192,6 +199,8 @@ const RegisterPage = () => {
 						aria-label="Re-enter Password"
 					/>
 				</Form.Group>
+
+				{/* Submit Button */}
 				{isFormValid() && (
 					<Button
 						className="button-primary w-full mt-4 animate-moveLeftRight"

@@ -1,3 +1,4 @@
+// App.js
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
@@ -10,14 +11,19 @@ import api from "./utils/api.js";
 
 function App() {
 	const [user, setUser] = useState(null);
+
 	const getUser = async () => {
 		try {
 			const storedToken = localStorage.getItem("token");
 			if (storedToken) {
 				const response = await api.get("/user/me");
 				setUser(response.data);
+			} else {
+				setUser(null);
 			}
-		} catch (error) {}
+		} catch (error) {
+			setUser(null);
+		}
 	};
 
 	useEffect(() => {
@@ -30,7 +36,7 @@ function App() {
 				path="/"
 				element={
 					<PrivateRoute user={user}>
-						<TodoPage />
+						<TodoPage user={user} setUser={setUser} />
 					</PrivateRoute>
 				}
 			/>
